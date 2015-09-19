@@ -6,21 +6,21 @@ public class LightsOut {
 	
 	private static final int WIDTH = 9;
 	private static final int HEIGHT = 9;
-	private Random r;
+	private ArduinoDriver ard;
 	
 	private int cursorRow;
 	private int cursorCol;
 	private int[][] gridColor = new int[WIDTH][HEIGHT];
 
-	public LightsOut() {
-		
+	public LightsOut(ArduinoDriver arduino) {
+		ard = arduino;
 	}
 	
 	public void startGame() {
 		cursorRow = 0;
 		cursorCol = 0;
 		
-		r = new Random();
+		Random r = new Random();
 		
 		//Initiate all LED's to either green or red
 		for(int i = 0; i < WIDTH; i++) {
@@ -99,8 +99,36 @@ public class LightsOut {
 			toggle(cursorRow-1, cursorCol);
 		}
 		
-		//check if game is won
-		checkWin();
+		
+//		if((cursorRow+1) != HEIGHT) {
+//			toggle(cursorRow+1, cursorCol);
+//			if((cursorCol-1) >= 0)
+//				toggle(cursorRow+1, cursorCol-1);
+//			if((cursorCol+1) != WIDTH)
+//				toggle(cursorRow+1, cursorCol+1);
+//		}
+//		if((cursorRow-1) >= 0) {
+//			toggle(cursorRow-1, cursorCol);
+//			if((cursorCol-1) >= 0)
+//				toggle(cursorRow-1, cursorCol-1);
+//			if((cursorCol+1) != WIDTH)
+//				toggle(cursorRow-1, cursorCol+1);
+//		}
+//		if((cursorCol-1) >= 0) {
+//			toggle(cursorRow, cursorCol-1);
+//		}
+//		if((cursorCol+1) != WIDTH) {
+//			toggle(cursorRow, cursorCol+1);
+//		}
+		
+		//check if game is won, turn last 3 columns green
+		if(checkWin()) {
+			for(int i = WIDTH+2; i > (WIDTH-1); i--) {
+				for(int j = 0; j < HEIGHT; j++) {
+					sendMessage(j,i,2);
+				}
+			}
+		}
 	}
 	
 	private void toggle(int row, int col) {
@@ -109,12 +137,16 @@ public class LightsOut {
 	}
 	
 	private void sendMessage(int r, int c, int l) {
-		
-		System.out.print("$");
-		System.out.print((char) ('0' + r));
-		System.out.print((char) ('0' + c));
-		System.out.print((char) ('0' + l));
-		System.out.println("!");
+		if(ard != null) {
+			ard.sendString("$" + ((char) ('0'+r)) + ((char) ('0'+c)) + ((char) ('0'+l)));
+		}
+		else {
+			System.out.print("$");
+			System.out.print((char) ('0' + r));
+			System.out.print((char) ('0' + c));
+			System.out.print((char) ('0' + l));
+			System.out.println("!");
+		}
 		
 		return;
 	}
