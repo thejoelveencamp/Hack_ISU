@@ -151,27 +151,35 @@ public class LightsOut {
 		return;
 	}
 	
-	public void moveCursor(int dir) {
+	public void moveCursor(char dir) {
 		switch(dir) {
 			//left
-			case 0:
-				if(cursorCol != 0)
+			case 'a':
+				if(cursorCol != 0) {
+					ard.sendString("a");
 					cursorCol--;
+				}
 				break;
 			//up
-			case 1:
-				if(cursorRow != (HEIGHT-1))
+			case 'w':
+				if(cursorRow != (HEIGHT-1)) {
+					ard.sendString("w");
 					cursorRow++;
+				}
 				break;
 			//right
-			case 2:
-				if(cursorCol != (WIDTH-1))
+			case 'd':
+				if(cursorCol != (WIDTH-1)) {
+					ard.sendString("d");
 					cursorCol++;
+				}
 				break;
 			//down
-			case 3:
-				if(cursorRow != 0)
+			case 's':
+				if(cursorRow != 0) {
+					ard.sendString("s");
 					cursorRow--;
+				}
 				break;
 			default:
 		}
