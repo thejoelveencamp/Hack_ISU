@@ -2,6 +2,8 @@ package hackISU;
 
 import java.util.Scanner;
 
+import ch.aplu.xboxcontroller.XboxController;
+
 public class Runner {
 	
 	public static void main(String[] args) {
@@ -12,6 +14,12 @@ public class Runner {
 		System.out.println("Type (s) start: (q) to quit");
 		System.out.println("===========================");
 		
+		XboxController xc = new XboxController();
+	    while (!xc.isConnected())
+	    {
+	    	System.out.println("controller not connected");
+	    }
+	    
 		
 		ArduinoDriver ard = new ArduinoDriver();
 		ard.startArduino();
@@ -26,7 +34,7 @@ public class Runner {
 //		ard.sendString("$00001!");
 //		
 //		
-		LightsOut lightsOut = new LightsOut(ard);
+		LightsOut lightsOut = new LightsOut(xc, ard);
 		lightsOut.startGame();
 //		
 //		
