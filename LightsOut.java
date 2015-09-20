@@ -14,6 +14,7 @@ public class LightsOut {
 
 	public LightsOut(ArduinoDriver arduino) {
 		ard = arduino;
+		ard.sendString("W");
 	}
 	
 	public void startGame() {
@@ -26,7 +27,7 @@ public class LightsOut {
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
 				gridColor[i][j] = r.nextInt(2)+1;
-				//sendMessage(i,j, gridColor[i][j]);
+				sendMessage(i,j, gridColor[i][j]);
 			}
 		}
 	}
@@ -121,13 +122,9 @@ public class LightsOut {
 //			toggle(cursorRow, cursorCol+1);
 //		}
 		
-		//check if game is won, turn last 3 columns green
+		//check if game is won
 		if(checkWin()) {
-			for(int i = WIDTH+2; i > (WIDTH-1); i--) {
-				for(int j = 0; j < HEIGHT; j++) {
-					sendMessage(j,i,2);
-				}
-			}
+			//TODO: do something cool for win condition
 		}
 	}
 	
@@ -137,14 +134,29 @@ public class LightsOut {
 	}
 	
 	private void sendMessage(int r, int c, int l) {
+		char r1 = (char) ('0' + r/10);
+		char r2 = (char) ('0' + r%10);
+		char c1 = (char) ('0' + c/10);
+		char c2 = (char) ('0' + c%10);
+		char color = (char) ('0' + l);
+		
 		if(ard != null) {
-			ard.sendString("$" + ((char) ('0'+r)) + ((char) ('0'+c)) + ((char) ('0'+l)));
+			ard.sendString("$" + r1 + r2 + c1 + c2 + color + "!");
+			System.out.println("$" + r1 + r2 + c1 + c2 + color + "!");
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else {
 			System.out.print("$");
-			System.out.print((char) ('0' + r));
-			System.out.print((char) ('0' + c));
-			System.out.print((char) ('0' + l));
+			System.out.print(r1);
+			System.out.print(r2);
+			System.out.print(c1);
+			System.out.print(c2);
+			System.out.print(color);
 			System.out.println("!");
 		}
 		
