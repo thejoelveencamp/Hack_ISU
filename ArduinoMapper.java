@@ -29,7 +29,7 @@ public class ArduinoMapper implements SerialPortEventListener {
 	/** Milliseconds to block while waiting for port open */
 	private static final int TIME_OUT = 2000;
 	/** Default bits per second for COM port. */
-	private static final int DATA_RATE = 9600;
+	private static final int DATA_RATE = 115200;
 
 	public OutputStream initialize() {
                 // the next line is for Raspberry Pi and 
@@ -80,7 +80,7 @@ public class ArduinoMapper implements SerialPortEventListener {
 	//I convert a string to bytes an send to output stream
 	public void send(String anOutputString, OutputStream anOutputStream) {
 		try {
-			System.out.println("writing");
+			//System.out.println("writing");
 			anOutputStream.write(anOutputString.getBytes());
 		}
 		catch (Exception e){
