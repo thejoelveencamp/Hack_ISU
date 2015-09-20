@@ -2,6 +2,9 @@ package hackISU;
 
 import java.util.Random;
 
+import ch.aplu.xboxcontroller.XboxController;
+import ch.aplu.xboxcontroller.XboxControllerAdapter;
+
 public class LightsOut {
 	
 	private static final int WIDTH = 9;
@@ -11,15 +14,48 @@ public class LightsOut {
 	private int cursorRow;
 	private int cursorCol;
 	private int[][] gridColor = new int[WIDTH][HEIGHT];
+	private XboxController x;
 
-	public LightsOut(ArduinoDriver arduino) {
+	public LightsOut(XboxController xc, ArduinoDriver arduino) {
 		ard = arduino;
 		ard.sendString("W");
+		x = xc;
 	}
 	
 	public void startGame() {
 		cursorRow = 0;
 		cursorCol = 0;
+		
+		x.addXboxControllerListener(new XboxControllerAdapter()
+	    {
+			
+		      public void dpad(int d, boolean pressed)
+		      {
+
+		    	  if (d == 0){
+		    	    //north
+		    	  }
+		    	  else if (d == 2){
+		    		  //east
+		    	  }
+		    	  else if (d == 4){
+		    		  //south
+		    	  }
+		    	  else if (d == 6)
+		    	  {
+		    		  //west
+		    	  }
+		    	  
+		      }
+		      public void buttonX(boolean pressed)
+		      {
+		    	  
+		      }
+			
+			
+			
+	    });
+		
 		
 		Random r = new Random();
 		
